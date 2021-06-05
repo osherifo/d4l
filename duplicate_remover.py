@@ -1,25 +1,22 @@
-import time
 import configs
 from helpers import measure_time
 
 
-
 class DuplicateRemover:
 
-    def __init__(self,token_file):
-        self.token_file=token_file
+    def __init__(self, token_file):
+        self.token_file = token_file
 
     @measure_time
     def sort_tokens(self):
         print('Sorting tokens...')
-        with open(self.token_file,'r') as f:
-            tokens=f.read().splitlines()
+        with open(self.token_file, 'r') as f:
+            tokens = f.read().splitlines()
         tokens.sort()
         return tokens
 
-
     @measure_time
-    def hash_tokens(self,tokens):
+    def hash_tokens(self, tokens):
         print('Hashing tokens...')
         token_counts = {}
         for token in tokens:
@@ -29,10 +26,9 @@ class DuplicateRemover:
                 token_counts[token] = token_counts[token] + 1
         return token_counts
 
-
     # generates two arrays , one for the indices of the tokens and the other with corresponding counts of these indices
     @measure_time
-    def count_tokens(self,tokens):
+    def count_tokens(self, tokens):
         print('Counting duplicate tokens...')
         token_counts = []
         indices = []
@@ -54,16 +50,15 @@ class DuplicateRemover:
 
         return [tokens, indices, token_counts]
 
-
     @measure_time
-    def write_hashed_tokens(self,token_counts):
+    def write_hashed_tokens(self, token_counts):
         print(f'Writing tokens to {configs.hashed_token_file}')
-        with open(configs.hashed_token_file,'w') as f:
-            for key,value in token_counts.items():
+        with open(configs.hashed_token_file, 'w') as f:
+            for key, value in token_counts.items():
                 f.write(f'{key[:]},{value}\n')
 
     @measure_time
-    def write_counted_tokens(self,token_data):
+    def write_counted_tokens(self, token_data):
         print(f'Writing tokens to {configs.counted_token_file}')
         tokens = token_data[0]
         indices = token_data[1]
@@ -80,6 +75,3 @@ class DuplicateRemover:
     @measure_time
     def remove_duplicates_counting(self):
         self.write_counted_tokens(self.count_tokens(self.sort_tokens()))
-
-
-

@@ -21,14 +21,13 @@ class TokenSaver:
 
         
         
-    @measure_time
     @measure_insertions
     def save_tokens(self):
 
         print(f'\nchunk size : {self.chunk_size}\n')
 
-        # duplicate_remover=DuplicateRemover(configs.token_file)
-        # duplicate_remover.remove_duplicates_counting()
+        duplicate_remover=DuplicateRemover(configs.token_file)
+        duplicate_remover.remove_duplicates_counting()
         pbar = tqdm(total=configs.token_count)
 
         with open(configs.counted_token_file, 'r') as f:
